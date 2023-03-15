@@ -18,6 +18,6 @@
 - [ ] json 生成
 
 
-## capture
+## Capture
 
 ![](https://blog-img-1252233196.cos.ap-guangzhou.myqcloud.com/微信截图_20230315175304.png)
