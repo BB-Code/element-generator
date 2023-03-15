@@ -1,0 +1,19 @@
+{
+  "name": "element-generator",
+  "version": "0.0.1",
+  "description": "根据**业务需求**选择生成需要的**代码文件**，提升开发效率",
+  "scripts": {
+    "dev": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BB-Code/element-generator.git"
+  },
+  "keywords": [],
+  "author": "BB-Code <15919854639@163.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BB-Code/element-generator/issues"
+  },
+  "homepage": "https://github.com/BB-Code/element-generator#readme"
+}

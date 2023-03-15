@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Element-Generator</title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./bolt.css">
+</head>
+<style>
+    .container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 600px;
+        margin: 10px auto;
+    }
+
+    code {
+        display: flex;
+        width: 600px;
+        height: auto;
+        margin: 10px auto;
+        cursor: pointer;
+        position: relative;
+        visibility: hidden;
+    }
+
+    .form {
+        margin-right: 20px;
+    }
+
+    .fieldset {
+        margin-top: 10px;
+    }
+
+    input[name='btnDelete'] {
+        background-color: tomato;
+        color: white;
+    }
+
+    .tip {
+        position: absolute;
+        top: 20px;
+        right: 80px;
+        display: none;
+        width: 100px;
+        height: 36px;
+        line-height: 36px;
+        background-color: #149114;
+        color: white;
+        border-radius: 4px;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <form class="form">
+            <label for="name">文件名</label>
+            <input type="text" name="fileName" />
+            <label for="width">弹窗宽度</label>
+            <input type="number" name="width" />
+            <label for="type">生成类型</label>
+            <input type="radio" name="gType" value="1" />表单
+            <input type="radio" name="gType" value="2" />标签导航
+            <fieldset class="fieldset">
+                <legend>表单字段</legend>
+                <input type="button" value="新增" name="btnAdd">
+                <table class="table">
+                    <tr>
+                        <th>name</th>
+                        <th>label</th>
+                        <th>prop</th>
+                        <th>model</th>
+                        <th>operation</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select name="nameSelect">
+                                <option value="select">select</option>
+                                <option value="input">input</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="textLabel" id="">
+                        </td>
+                        <td>
+                            <input type="text" name="textProp" id="">
+                        </td>
+                        <td>
+                            <input type="text" name="textModel" id="">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <input type="button" value="生成" name="btnSubmit" />
+        </form>
+        <div class="code">
+            <code class="codeContent">
+            </code>
+        </div>
+    </div>
+    <div class="tip">复制成功</div>
+    <script src="./template/dialog.js"></script>
+    <script>
+        const $ = (name) => {
+            return document.getElementsByName(name)
+        }
+        const $$ = (className) => {
+            return document.getElementsByClassName(className)
+        }
+        HTMLElement.prototype.appendHTML = function (html) {
+            let divTemp = document.createElement("div")
+            let nodes = null
+            // 文档片段 append，提高性能
+            let fragment = document.createDocumentFragment();
+            divTemp.innerHTML = html;
+            nodes = divTemp.childNodes;
+            for (let i = 0, length = nodes.length; i < length; i += 1) {
+                fragment.appendChild(nodes[i].cloneNode(true));
+            }
+            this.appendChild(fragment);
+            nodes = null;
+            fragment = null;
+        };
+        // 新增行
+        $('btnAdd')[0].addEventListener('click', () => {
+            let rowNum = $$('table')[0].rows.length;
+            let tr = document.createElement("tr");
+            let td = document.createElement("td");
+            let select = document.createElement('select')
+            select.setAttribute('name', `nameSelect${rowNum}`)
+            var option1 = document.createElement("option");
+            option1.setAttribute('value', 'select')
+            var text1 = document.createTextNode("select");
+            option1.appendChild(text1)
+            var option2 = document.createElement("option");
+            option2.setAttribute('value', 'input')
+            var text2 = document.createTextNode("input");
+            option2.appendChild(text2)
+            select.appendChild(option1)
+            select.appendChild(option2)
+            let td2 = document.createElement("td");
+            let td3 = document.createElement("td");
+            let td4 = document.createElement("td");
+            let td5 = document.createElement("td");
+
+            let input1 = document.createElement('input')
+            input1.setAttribute('type', 'text')
+            input1.setAttribute('name', `textLabel${rowNum}`)
+            let input2 = document.createElement('input')
+            input2.setAttribute('type', 'text')
+            input2.setAttribute('name', `textProp${rowNum}`)
+            let input3 = document.createElement('input')
+            input3.setAttribute('type', 'text')
+            input3.setAttribute('name', `textModel${rowNum}`)
+            let input4 = document.createElement('input')
+            input4.setAttribute('type', 'button')
+            input4.setAttribute('name', 'btnDelete')
+            input4.dataset.num = rowNum
+            input4.setAttribute('value', '删除')
+            input4.addEventListener('click', (data) => {
+                tr.remove()
+            })
+            tr.appendChild(td).appendChild(select)
+            tr.appendChild(td2).appendChild(input1)
+            tr.appendChild(td3).appendChild(input2)
+            tr.appendChild(td4).appendChild(input3)
+            tr.appendChild(td5).appendChild(input4)
+            $$('table')[0].childNodes[1].appendChild(tr)
+        });
+        //  提交
+        $('btnSubmit')[0].addEventListener('click', () => {
+            let fileName = $('fileName')[0].value;
+            let width = $('width')[0].value;
+            let gType = $('gType')[0].value;
+            let nameSelect = $('nameSelect')[0].value;
+            let textLabel = $('textLabel')[0].value;
+            let textProp = $('textProp')[0].value;
+            let textModel = $('textModel')[0].value;
+            //console.log(fileName, width, gType, nameSelect, textLabel, textProp, textModel)
+            let result = DialogGenerator({
+                name: fileName,
+                width,
+                type: gType,
+                itemArray: [
+                    {
+                        name: nameSelect, label: textLabel, prop: textProp, model: textModel
+                    }
+                ],
+            });
+            console.log(result)
+            if (result) {
+                document.getElementsByTagName('code')[0].style.visibility = 'visible'
+                $$('codeContent')[0].innerText = result;
+            }
+
+        })
+        // 复制粘贴
+        $$('code')[0].addEventListener('click', () => {
+            navigator.clipboard.writeText($$('codeContent')[0].innerText)
+            $$('tip')[0].style.display = 'block'
+            setTimeout(() => {
+                $$('tip')[0].style.display = 'none'
+            }, 1000)
+        })
+    </script>
+</body>
+
+</html>
