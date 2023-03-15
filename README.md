@@ -11,10 +11,10 @@
 
 - [ ] 前端输入生成
     - [x] dialog
-    - [x] drawer
-    - [x] table
-    - [x] upload
-- [x] 上传截图生成
+    - [ ] drawer
+    - [ ] table
+    - [ ] upload
+- [ ] 上传截图生成
 - [ ] json 生成
 
 
