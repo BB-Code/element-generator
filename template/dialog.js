@@ -11,12 +11,33 @@ const formGenerator = (obj) => {
                 result += `<el-form-item label="${element.label}" prop="${element.prop}">
                 <el-input v-model="dialogProps.rowData!.${element.model}" clearable></el-input>
             </el-form-item>`
+            case 'radio':
+                result += `<el-form-item label="${element.label}" prop="${element.prop}">
+                <el-radio-group v-model="dialogProps.rowData!.${element.model}">
+                    ${radioGenerator(element.radioList)
+                    }
+                </el-radio-group>
+            </el-form-item>`
+                break;
+            case 'date':
+                result += `<el-form-item label="${element.label}" prop="${element.prop}">
+                <el-date-picker v-model="dialogProps.rowData!.${element.model}" type="date" />
+            </el-form-item>`
                 break;
             default:
                 break;
         }
     });
 
+    return result
+}
+
+const radioGenerator = (arr) => {
+    let result = '';
+    console.log(`arr`, arr)
+    arr.forEach((element, index) => {
+        result += `<el-radio :label="${index}">${element}</el-radio>`
+    });
     return result
 }
 
@@ -32,7 +53,7 @@ const DialogGenerator = ({
     name,
     width,
     type, // 1 表单 2 标签导航
-    itemArray, // [{name:'',label:'',prop:'',model:''}]
+    itemArray, // [{name:'',label:'',prop:'',model:'',radioList:''}]
 }) => {
     let template = `<template>
 	<div>

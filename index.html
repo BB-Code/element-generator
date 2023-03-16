@@ -75,26 +75,8 @@
                         <th>label</th>
                         <th>prop</th>
                         <th>model</th>
+                        <th>radiolist</th>
                         <th>operation</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select name="nameSelect">
-                                <option value="select">select</option>
-                                <option value="input">input</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="text" name="textLabel" id="">
-                        </td>
-                        <td>
-                            <input type="text" name="textProp" id="">
-                        </td>
-                        <td>
-                            <input type="text" name="textModel" id="">
-                        </td>
-                        <td>
-                        </td>
                     </tr>
                 </table>
             </fieldset>
@@ -114,20 +96,6 @@
         const $$ = (className) => {
             return document.getElementsByClassName(className)
         }
-        HTMLElement.prototype.appendHTML = function (html) {
-            let divTemp = document.createElement("div")
-            let nodes = null
-            // 文档片段 append，提高性能
-            let fragment = document.createDocumentFragment();
-            divTemp.innerHTML = html;
-            nodes = divTemp.childNodes;
-            for (let i = 0, length = nodes.length; i < length; i += 1) {
-                fragment.appendChild(nodes[i].cloneNode(true));
-            }
-            this.appendChild(fragment);
-            nodes = null;
-            fragment = null;
-        };
         // 新增行
         $('btnAdd')[0].addEventListener('click', () => {
             let rowNum = $$('table')[0].rows.length;
@@ -135,20 +103,37 @@
             let td = document.createElement("td");
             let select = document.createElement('select')
             select.setAttribute('name', `nameSelect${rowNum}`)
+
             var option1 = document.createElement("option");
-            option1.setAttribute('value', 'select')
-            var text1 = document.createTextNode("select");
-            option1.appendChild(text1)
             var option2 = document.createElement("option");
-            option2.setAttribute('value', 'input')
+            var option3 = document.createElement("option");
+            var option4 = document.createElement("option");
+
+            var text1 = document.createTextNode("select");
             var text2 = document.createTextNode("input");
+            var text3 = document.createTextNode("radio");
+            var text4 = document.createTextNode("date");
+
+            option1.setAttribute('value', 'select')
+            option2.setAttribute('value', 'input')
+            option3.setAttribute('value', 'radio')
+            option4.setAttribute('value', 'date')
+
+            option1.appendChild(text1)
             option2.appendChild(text2)
+            option3.appendChild(text3)
+            option4.appendChild(text4)
+
             select.appendChild(option1)
             select.appendChild(option2)
+            select.appendChild(option3)
+            select.appendChild(option4)
+
             let td2 = document.createElement("td");
             let td3 = document.createElement("td");
             let td4 = document.createElement("td");
             let td5 = document.createElement("td");
+            let td6 = document.createElement("td");
 
             let input1 = document.createElement('input')
             input1.setAttribute('type', 'text')
@@ -159,6 +144,9 @@
             let input3 = document.createElement('input')
             input3.setAttribute('type', 'text')
             input3.setAttribute('name', `textModel${rowNum}`)
+            let input5 = document.createElement('input')
+            input5.setAttribute('type', 'text')
+            input5.setAttribute('name', `radioList${rowNum}`)
             let input4 = document.createElement('input')
             input4.setAttribute('type', 'button')
             input4.setAttribute('name', 'btnDelete')
@@ -171,6 +159,7 @@
             tr.appendChild(td2).appendChild(input1)
             tr.appendChild(td3).appendChild(input2)
             tr.appendChild(td4).appendChild(input3)
+            tr.appendChild(td6).appendChild(input5)
             tr.appendChild(td5).appendChild(input4)
             $$('table')[0].childNodes[1].appendChild(tr)
         });
@@ -179,22 +168,25 @@
             let fileName = $('fileName')[0].value;
             let width = $('width')[0].value;
             let gType = $('gType')[0].value;
-            let nameSelect = $('nameSelect')[0].value;
-            let textLabel = $('textLabel')[0].value;
-            let textProp = $('textProp')[0].value;
-            let textModel = $('textModel')[0].value;
-            //console.log(fileName, width, gType, nameSelect, textLabel, textProp, textModel)
+            let rowNum = $$('table')[0].rows.length;
+            let arr = []
+            let radioList
+            for (let index = 1; index < rowNum; index++) {
+                radioList = $(`radioList${index}`)[0].value && ($(`radioList${index}`)[0].value).split(',')
+                arr.push({
+                    name: $(`nameSelect${index}`)[0].value,
+                    label: $(`textLabel${index}`)[0].value,
+                    prop: $(`textProp${index}`)[0].value,
+                    model: $(`textModel${index}`)[0].value,
+                    radioList
+                })
+            }
             let result = DialogGenerator({
                 name: fileName,
                 width,
                 type: gType,
-                itemArray: [
-                    {
-                        name: nameSelect, label: textLabel, prop: textProp, model: textModel
-                    }
-                ],
+                itemArray: arr
             });
-            console.log(result)
             if (result) {
                 document.getElementsByTagName('code')[0].style.visibility = 'visible'
                 $$('codeContent')[0].innerText = result;
@@ -203,11 +195,13 @@
         })
         // 复制粘贴
         $$('code')[0].addEventListener('click', () => {
-            navigator.clipboard.writeText($$('codeContent')[0].innerText)
-            $$('tip')[0].style.display = 'block'
-            setTimeout(() => {
-                $$('tip')[0].style.display = 'none'
-            }, 1000)
+            if ($$('codeContent')[0].innerText) {
+                navigator.clipboard.writeText($$('codeContent')[0].innerText)
+                $$('tip')[0].style.display = 'block'
+                setTimeout(() => {
+                    $$('tip')[0].style.display = 'none'
+                }, 1000)
+            }
         })
     </script>
 </body>
