@@ -11,6 +11,12 @@
 
 - [ ] 前端输入生成
     - [x] dialog
+        - [x] input
+        - [x] select
+        - [x] radio
+        - [ ] checkout
+        - [ ] date
+        - [ ] udpate file
     - [ ] drawer
     - [ ] table
     - [ ] upload
