@@ -11,12 +11,13 @@
 
 - [ ] 前端输入生成
     - [x] dialog
+        - [ ] button
         - [x] input
         - [x] select
         - [x] radio
         - [ ] checkout
-        - [ ] date
-        - [ ] udpate file
+        - [x] date
+        - [x] udpate file
     - [ ] drawer
     - [ ] table
     - [ ] upload
@@ -27,4 +28,10 @@
 
 ## Capture
 
-![](https://blog-img-1252233196.cos.ap-guangzhou.myqcloud.com/微信截图_20230315180106.png)
+> 代码生成
+
+![](https://blog-img-1252233196.cos.ap-guangzhou.myqcloud.com/微信截图_20230316114811.png)
+
+> 预览效果
+
+![](https://blog-img-1252233196.cos.ap-guangzhou.myqcloud.com/微信截图_20230316114842.png)

@@ -96,6 +96,9 @@
         const $$ = (className) => {
             return document.getElementsByClassName(className)
         }
+        const trimStr =(str) =>{
+            return str.trim()
+        }
         // 新增行
         $('btnAdd')[0].addEventListener('click', () => {
             let rowNum = $$('table')[0].rows.length;
@@ -108,26 +111,31 @@
             var option2 = document.createElement("option");
             var option3 = document.createElement("option");
             var option4 = document.createElement("option");
+            var option5 = document.createElement("option");
 
-            var text1 = document.createTextNode("select");
-            var text2 = document.createTextNode("input");
+            var text1 = document.createTextNode("input");
+            var text2 = document.createTextNode("select");
             var text3 = document.createTextNode("radio");
             var text4 = document.createTextNode("date");
+            var text5 = document.createTextNode("file");
 
-            option1.setAttribute('value', 'select')
-            option2.setAttribute('value', 'input')
+            option1.setAttribute('value', 'input')
+            option2.setAttribute('value', 'select')
             option3.setAttribute('value', 'radio')
             option4.setAttribute('value', 'date')
+            option5.setAttribute('value', 'file')
 
             option1.appendChild(text1)
             option2.appendChild(text2)
             option3.appendChild(text3)
             option4.appendChild(text4)
+            option5.appendChild(text5)
 
             select.appendChild(option1)
             select.appendChild(option2)
             select.appendChild(option3)
             select.appendChild(option4)
+            select.appendChild(option5)
 
             let td2 = document.createElement("td");
             let td3 = document.createElement("td");
@@ -172,12 +180,12 @@
             let arr = []
             let radioList
             for (let index = 1; index < rowNum; index++) {
-                radioList = $(`radioList${index}`)[0].value && ($(`radioList${index}`)[0].value).split(',')
+                radioList = $(`radioList${index}`)[0].value && (trimStr($(`radioList${index}`)[0].value)).split(',')
                 arr.push({
-                    name: $(`nameSelect${index}`)[0].value,
-                    label: $(`textLabel${index}`)[0].value,
-                    prop: $(`textProp${index}`)[0].value,
-                    model: $(`textModel${index}`)[0].value,
+                    name: trimStr($(`nameSelect${index}`)[0].value),
+                    label: trimStr($(`textLabel${index}`)[0].value),
+                    prop: trimStr($(`textProp${index}`)[0].value),
+                    model: trimStr($(`textModel${index}`)[0].value),
                     radioList
                 })
             }
@@ -185,7 +193,8 @@
                 name: fileName,
                 width,
                 type: gType,
-                itemArray: arr
+                itemArray: arr,
+                isUploadFile: true
             });
             if (result) {
                 document.getElementsByTagName('code')[0].style.visibility = 'visible'
