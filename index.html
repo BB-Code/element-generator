@@ -14,7 +14,6 @@
         display: flex;
         flex-direction: row;
         justify-content: center;
-        width: 600px;
         margin: 10px auto;
     }
 
@@ -54,11 +53,29 @@
         border-radius: 4px;
         text-align: center;
     }
+    .radioGroup{
+        position: relative;
+    }
+    .upload{
+        display: none;
+        position:absolute;
+        left: 50%;
+    }
 </style>
 
 <body>
     <div class="container">
+        <form action="http://localhost:9000/profile" method="post" enctype="multipart/form-data">
+            <div class="upload">
+                <input type="file" name="fileHandler">
+            </div>
+            <input type="submit" value="上传文件" />
+        </form>
         <form class="form">
+            <div class="radioGroup">
+                <input type="radio" value="1" name="radioSelect" />IN
+                <input type="radio" value="2" name="radioSelect" id="radio2"/>OCR
+            </div>
             <label for="name">文件名</label>
             <input type="text" name="fileName" />
             <label for="width">弹窗宽度</label>
@@ -88,6 +105,7 @@
         </div>
     </div>
     <div class="tip">复制成功</div>
+    <script src="./utils/tesseract.min.js"></script>
     <script src="./template/dialog.js"></script>
     <script>
         const $ = (name) => {
@@ -96,7 +114,7 @@
         const $$ = (className) => {
             return document.getElementsByClassName(className)
         }
-        const trimStr =(str) =>{
+        const trimStr = (str) => {
             return str.trim()
         }
         // 新增行
@@ -212,6 +230,34 @@
                 }, 1000)
             }
         })
+    </script>
+    <script>
+        //    window.onload =()=>{
+        //     console.log(Tesseract)
+        //     Tesseract.createWorker().then(async(res)=>{
+        //         await res.loadLanguage('eng');
+        //         await res.initialize('eng');
+         //        // 提示加载解析中
+        //         const { data: { text } } = await res.recognize('http://localhost:9000/images/test.png');
+        //         // 关闭提示
+        //         //console.log(text.split('\n'))
+        //         localStorage.setItem('imgOCR',text)
+        //         await res.terminate(); 
+        //     })
+        //    }
+            $$('radioGroup')[0].addEventListener('change',(data)=>{
+                console.log(data.target.value)
+                let res = data.target.value
+                if(res == 1){
+                    $$('upload')[0].style.display = 'none'
+                }else{
+                    $$('upload')[0].style.display = 'block'
+                }
+            })
+
+            $('fileHandler')[0].addEventListener('change',(data)=>{
+                console.log(data)
+            })
     </script>
 </body>
 
