@@ -198,7 +198,9 @@
             let arr = []
             let radioList
             for (let index = 1; index < rowNum; index++) {
-                radioList = $(`radioList${index}`)[0].value && (trimStr($(`radioList${index}`)[0].value)).split(',')
+                if($(`radioList${index}`)[0]){
+                    radioList = $(`radioList${index}`)[0].value && (trimStr($(`radioList${index}`)[0].value)).split(',')
+                }
                 arr.push({
                     name: trimStr($(`nameSelect${index}`)[0].value),
                     label: trimStr($(`textLabel${index}`)[0].value),
