@@ -40,7 +40,7 @@ const formGenerator = (obj) => {
 
 const radioGenerator = (arr) => {
     let result = '';
-    if(arr){
+    if (arr) {
         arr.forEach((element, index) => {
             result += `<el-radio :label="${index}">${element}</el-radio>`
         });
