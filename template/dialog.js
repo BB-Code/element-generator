@@ -102,7 +102,7 @@ const dialogProps = ref<dialogProps>({
 	title: ""
 });
 
-// 附件上传
+${isUploadFile && `// 附件上传
 const AddFile = () => {
 	uplodaRef.value.uploadParams({
 		id: "",
@@ -111,8 +111,7 @@ const AddFile = () => {
 		uploadApi: "",
 		getTableList: ""
 	});
-};
-
+};`}
 // 接收父组件传过来的参数
 const acceptParams = (params: dialogProps): void => {
 	dialogProps.value = params;
